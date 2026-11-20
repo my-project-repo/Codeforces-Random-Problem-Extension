@@ -46,7 +46,7 @@ The extension is installed the same way on Chrome, Edge, Brave, Opera, and other
    - Edge: `edge://extensions`
    - Brave: `brave://extensions`
 3. Turn on **Developer mode** (top-right corner).
-4. Click **Load unpacked** and select the project folder — the one containing `manifest.json`, not its parent and not the `.zip`.
+4. Click **Load unpacked** and select the project folder — the one containing `manifest.json`, not its parent folder.
 5. Pin the extension to the toolbar (optional, but handy).
 
 The dice button now appears in the bottom-right corner of every Codeforces page, and the extension icon opens the popup.
@@ -174,14 +174,16 @@ To develop against a live browser:
 
 ### Packaging for distribution
 
-Zip the files that the extension actually needs — not the whole repository:
+A `.zip` is only needed to upload to the Chrome Web Store or to attach a download to a release. It is a build artifact, not source, so it is not committed — `.gitignore` excludes `*.zip`.
+
+Build it from the files the extension actually needs, not the whole repository:
 
 ```bash
 zip -r cf-random-problem.zip \
   manifest.json background.js content.js utils.js popup.html popup.js icon.png
 ```
 
-The repository already includes a packaged `cf-random-problem.zip`. Rebuild it after changing any of the files above.
+To offer a download, attach the resulting zip to a GitHub Release. Anyone who just wants to run the extension can use **Code → Download ZIP** on the repository and load the unzipped folder unpacked.
 
 ## Project structure
 
@@ -199,7 +201,7 @@ The repository already includes a packaged `cf-random-problem.zip`. Rebuild it a
 ├── tests/
 │   └── utils.test.js      # Unit tests for filtering, picking, URL building
 ├── package.json           # Test script and dev dependency
-└── cf-random-problem.zip  # Packaged build
+└── .gitignore             # Keeps node_modules and local zips out of git
 ```
 
 ## Contributing
